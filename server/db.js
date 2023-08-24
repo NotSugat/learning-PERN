@@ -1,11 +1,21 @@
-import { Pool } from "pg"
+import pkg from 'pg';
+const { Client } = pkg;
 
-const pool = new Pool({
+const client = new Client({
 	user: "postgres",
-	password: "sugat123",
+	password: "sugat",
 	host: "localhost",
-	port: 5000,
+	port: 5432,
 	database: "perntodo"
 })
 
-export default pool;
+client.connect((err) => {
+	if (err) {
+		console.log('connection error', err.stack)
+	} else {
+		console.log('connected')
+	}
+
+})
+
+export default client;
