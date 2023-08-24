@@ -1,12 +1,14 @@
 import pkg from 'pg';
+import 'dotenv/config'
+
 const { Client } = pkg;
 
 const client = new Client({
-	user: "postgres",
-	password: "sugat",
-	host: "localhost",
-	port: 5432,
-	database: "perntodo"
+	user: process.env.PGUSER,
+	password: process.env.PGPASSWORD,
+	host: process.env.PGHOST,
+	port: process.env.PGPORT,
+	database: process.env.PGDATABASE
 })
 
 client.connect((err) => {
