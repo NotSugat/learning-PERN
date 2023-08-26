@@ -1,9 +1,11 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import axios from "axios";
 import { Checkbox } from "@/components/ui/checkbox"
 import { BsTrash3 } from "react-icons/bs"
+import { Edit } from "./components/Edit";
+import { useAppSelector } from "@/redux/store";
 
 interface task {
   todo_id: number,
@@ -14,6 +16,9 @@ export default function Home() {
   const [data, setData] = useState<Array<task>>([]);
   const [dataState, setDataState] = useState<boolean>(false);
   const [warning, setWarning] = useState<string>("")
+  const isEdited = useAppSelector(
+    (state) => state.editReducer.isEdited
+  )
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -48,9 +53,7 @@ export default function Home() {
 
     }
     getData();
-  }, [dataState])
-
-
+  }, [dataState, isEdited])
 
 
   return (
@@ -84,13 +87,20 @@ export default function Home() {
                     {item.description}
                   </label>
                 </div>
-                <button onClick={() => handleDelete(item.todo_id)}>
-                  <BsTrash3 className="text-red-500 text-2xl hover:bg-secondary p-1 hover:text-2xl rounded-full" />
-                </button>
+
+                <div className="flex items-center gap-2">
+                  <button onClick={() => handleDelete(item.todo_id)}>
+                    <BsTrash3 className="text-red-500 text-2xl hover:bg-secondary p-1 hover:text-2xl rounded-full" />
+                  </button>
+
+                  <Edit id={item.todo_id} prevText={item.description} />
+                </div>
               </div>
             )
           }
         </div>
+
+
       </section>
     </div>
   )
